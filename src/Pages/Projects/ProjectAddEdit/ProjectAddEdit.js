@@ -1,8 +1,6 @@
 import {
   ClearOutlined,
-  FileAddFilled,
   FundProjectionScreenOutlined,
-  InboxOutlined,
   PlusOutlined,
   SaveOutlined,
   UploadOutlined,
