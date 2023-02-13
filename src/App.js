@@ -1,25 +1,47 @@
-import logo from './logo.svg';
-import './App.css';
+import LoginPage from "./Pages/LoginPage";
+import "./App.css";
+import { Route, Routes } from "react-router-dom";
+import HomeRoutes from "./Routes/HomeRoutes";
+import api from "./apis/AxiosConfigs";
+import Loader from "./Components/Loader";
+import { useEffect, useState } from "react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+const App = () => {
+  const [loading, setLoading] = useState(false);
+  // useEffect(() => {
+  //   setLoading(true);
+  //   setTimeout(() => {
+  //     setLoading(false);
+  //   }, 2000);
+  // }, []);
+  api.interceptors.request.use((request) => {
+    setLoading(true);
+    return request;
+  });
+
+  api.interceptors.response.use(
+    (response) => {
+      console.log(response);
+      setLoading(false);
+      return response;
+    },
+    (error) => {
+      setLoading(false);
+      return error;
+    }
   );
-}
+
+  return (
+    <>
+      <div>
+        {loading && <Loader />}
+        <Routes>
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/mainHome/*" element={<HomeRoutes />} />
+        </Routes>
+      </div>
+    </>
+  );
+};
 
 export default App;

@@ -1,0 +1,23 @@
+.loginForm {
+  width: 30%;
+}
+
+.loginChild {
+  margin-top: 25vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ant-layout-header {
+  color: #fff;
+  background: #d87431;
+  height: 5vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loginHeader{
+  font-size: larger;
+}

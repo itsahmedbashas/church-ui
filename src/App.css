@@ -36,3 +36,59 @@
     transform: rotate(360deg);
   }
 }
+
+.mainWindow {
+  margin-left: 10px !important;
+}
+
+.windowSearchBar {
+  width: 20vw !important;
+}
+
+.windowAdd {
+  width: 65vw;
+}
+
+.windowBreadCrumb {
+  margin-top: 15px;
+}
+
+.windowTable {
+  width: 65vw;
+}
+
+.breadCrumbItem {
+  cursor: pointer !important;
+}
+
+.ant-breadcrumb {
+  font-size: 18px !important;
+}
+
+.ant-input {
+  border-radius: 0px !important;
+}
+
+.ant-input-affix-wrapper {
+  border-radius: 0px !important;
+}
+
+.ant-picker {
+  width: 100% !important;
+  border-radius: 0px;
+}
+
+.ant-select-selector {
+  border-radius: 0px !important;
+}
+
+.ant-picker-today-btn {
+  color: #d87431 !important;
+}
+
+legend {
+  color: #d87431 !important;
+  margin-bottom: 10px !important;
+  font-size: 1.25em !important;
+  margin-top: 10px !important;
+}
