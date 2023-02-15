@@ -18,18 +18,99 @@ import {
   Upload,
 } from "antd";
 import TextArea from "antd/es/input/TextArea";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { AdminAPI } from "../../../apis/AdminAPI";
+import { AdminMenus } from "../../../shared/AdminMenus";
 
 export default function ProjectAddEdit() {
   const navigate = useNavigate();
-  const options = [];
-  for (let i = 10; i < 36; i++) {
-    options.push({
-      value: i.toString(36) + i,
-      label: i.toString(36) + i,
-    });
-  }
+
+  /** variables creation */
+  const [projectTypes, setProjectTypes] = useState([]);
+  const [projectStatus, setProjectStatus] = useState([]);
+  const [applyingEntity, setApplyingEntity] = useState([]);
+  const [applicantCommunity, setApplicantCommunity] = useState([]);
+  const [completionStatus, setCompletionStatus] = useState([]);
+
+  /** functionality to handle at page loads */
+  useEffect(() => {
+    getProjectTypes();
+    getProjectStatus();
+    getApplyingEntity();
+    getApplicantCommunity();
+    getCompletionStatus();
+  }, []);
+
+  /** Getting Project Types */
+  const getProjectTypes = () => {
+    AdminAPI.getAdminLookup(AdminMenus.ProjectTypes)
+      .then((res) => {
+        setProjectTypes(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  /** Getting Project Status */
+  const getProjectStatus = () => {
+    AdminAPI.getAdminLookup(AdminMenus.ProjectStatus)
+      .then((res) => {
+        setProjectStatus(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  /** Getting Applying Entity */
+  const getApplyingEntity = () => {
+    AdminAPI.getAdminLookup(AdminMenus.ApplyingEntity)
+      .then((res) => {
+        setApplyingEntity(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  /** Getting Applying Entity */
+  const getApplicantCommunity = () => {
+    AdminAPI.getAdminLookup(AdminMenus.ApplicantCommunity)
+      .then((res) => {
+        setApplicantCommunity(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  /** Getting Applying Entity */
+  const getCompletionStatus = () => {
+    AdminAPI.getAdminLookup(AdminMenus.CompletionStatus)
+      .then((res) => {
+        setCompletionStatus(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  /** form object */
+  const [form] = Form.useForm();
+
+  /** save click function */
+  const onSubmit = (formValues) => {
+    //const appDate = formValues.applicationDate.format("DD/MM/YYYY");
+    console.log(formValues);
+  };
+
+  /** when form failed to get mandatory values */
+  const onSubmitFailed = (errorInfo) => {
+    console.log(errorInfo);
+  };
+
   return (
     <div className="projectsAddEdit mainWindow">
       <div className="windowBreadCrumb">
@@ -53,12 +134,27 @@ export default function ProjectAddEdit() {
         </div>
       </div>
       <div className="projectForm">
-        <Form name="form_item_path" layout="vertical">
+        <Form
+          name="projectsAddEdit"
+          form={form}
+          layout="vertical"
+          onFinish={onSubmit}
+          onFinishFailed={onSubmitFailed}
+        >
           <legend>Project Details</legend>
           <Row gutter={24}>
             <Col className="gutter-row" span={8}>
               <div>
-                <Form.Item label="Project Title" required>
+                <Form.Item
+                  label="Project Title"
+                  name="projectTitle"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please Enter Project Title",
+                    },
+                  ]}
+                >
                   <Input allowClear />
                 </Form.Item>
               </div>
@@ -67,21 +163,33 @@ export default function ProjectAddEdit() {
           <Row gutter={24}>
             <Col className="gutter-row" span={6}>
               <div>
-                <Form.Item label="Application Date">
+                <Form.Item
+                  label="Application Date"
+                  name="applicationDate"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please Select Application Date",
+                    },
+                  ]}
+                >
                   <DatePicker format={"DD/MM/YYYY"} />
                 </Form.Item>
               </div>
             </Col>
             <Col className="gutter-row" span={6}>
               <div>
-                <Form.Item label="Desired Date">
+                <Form.Item label="Desired Date" name="desiredDate">
                   <DatePicker format={"DD/MM/YYYY"} />
                 </Form.Item>
               </div>
             </Col>
             <Col className="gutter-row" span={6}>
               <div>
-                <Form.Item label="Estimated End of Project">
+                <Form.Item
+                  label="Estimated End of Project"
+                  name="estimatedEndOfProject"
+                >
                   <DatePicker format={"DD/MM/YYYY"} />
                 </Form.Item>
               </div>
@@ -90,33 +198,69 @@ export default function ProjectAddEdit() {
           <Row gutter={24}>
             <Col className="gutter-row" span={6}>
               <div>
-                <Form.Item label="Project Type">
+                <Form.Item
+                  label="Project Type"
+                  name="projectType"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please Select Project Type",
+                    },
+                  ]}
+                >
                   <Select
-                    defaultValue="a1"
+                    fieldNames={{
+                      label: "projectTypeName",
+                      value: "projectTypeId",
+                    }}
                     //   onChange={handleChange}
-                    options={options}
+                    options={projectTypes}
                   />
                 </Form.Item>
               </div>
             </Col>
             <Col className="gutter-row" span={6}>
               <div>
-                <Form.Item label="Project Status">
+                <Form.Item
+                  label="Project Status"
+                  name="projectStatus"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please Select Project Status",
+                    },
+                  ]}
+                >
                   <Select
-                    defaultValue="a1"
+                    fieldNames={{
+                      label: "projectStatusName",
+                      value: "projectStatusId",
+                    }}
                     //   onChange={handleChange}
-                    options={options}
+                    options={projectStatus}
                   />
                 </Form.Item>
               </div>
             </Col>
             <Col className="gutter-row" span={6}>
               <div>
-                <Form.Item label="Applying Entity">
+                <Form.Item
+                  label="Applying Entity"
+                  name="applyingEntity"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please Select Applying Entity",
+                    },
+                  ]}
+                >
                   <Select
-                    defaultValue="a1"
+                    fieldNames={{
+                      label: "applyingEntityName",
+                      value: "applyingEntityId",
+                    }}
                     //   onChange={handleChange}
-                    options={options}
+                    options={applyingEntity}
                   />
                 </Form.Item>
               </div>
@@ -126,7 +270,16 @@ export default function ProjectAddEdit() {
           <Row gutter={24}>
             <Col className="gutter-row" span={8}>
               <div>
-                <Form.Item label="Applicant Name" required>
+                <Form.Item
+                  label="Applicant Name"
+                  name="applicantName"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please Enter Applicant Name",
+                    },
+                  ]}
+                >
                   <Input allowClear />
                 </Form.Item>
               </div>
@@ -135,25 +288,49 @@ export default function ProjectAddEdit() {
           <Row gutter={24}>
             <Col className="gutter-row" span={6}>
               <div>
-                <Form.Item label="Applicant Community">
+                <Form.Item
+                  label="Applicant Community"
+                  name="applicantCommunity"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please Select Applicant Community",
+                    },
+                  ]}
+                >
                   <Select
-                    defaultValue="a1"
+                    fieldNames={{
+                      label: "applicantCommunityName",
+                      value: "applicantCommunityId",
+                    }}
                     //   onChange={handleChange}
-                    options={options}
+                    options={applicantCommunity}
                   />
                 </Form.Item>
               </div>
             </Col>
             <Col className="gutter-row" span={6}>
               <div>
-                <Form.Item label="Applicant Institution">
+                <Form.Item
+                  label="Applicant Institution"
+                  name="applicantInstitution"
+                >
                   <Input allowClear />
                 </Form.Item>
               </div>
             </Col>
             <Col className="gutter-row" span={6}>
               <div>
-                <Form.Item label="Applicant Email-Id">
+                <Form.Item
+                  label="Applicant Email-Id"
+                  name="applicantEmailId"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please Enter Applicant Email Id",
+                    },
+                  ]}
+                >
                   <Input allowClear />
                 </Form.Item>
               </div>
@@ -163,21 +340,33 @@ export default function ProjectAddEdit() {
           <Row gutter={24}>
             <Col className="gutter-row" span={6}>
               <div>
-                <Form.Item label="Total Project Cost">
+                <Form.Item
+                  label="Total Project Cost"
+                  name="totalProjectCost"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please Enter Project Total Cost",
+                    },
+                  ]}
+                >
                   <Input allowClear prefix="&#8377;" suffix="/-" />
                 </Form.Item>
               </div>
             </Col>
             <Col className="gutter-row" span={6}>
               <div>
-                <Form.Item label="Local Contribution">
+                <Form.Item label="Local Contribution" name="localContribution">
                   <Input allowClear prefix="&#8377;" suffix="/-" />
                 </Form.Item>
               </div>
             </Col>
             <Col className="gutter-row" span={6}>
               <div>
-                <Form.Item label="Amount to be Applied for Agencies">
+                <Form.Item
+                  label="Amount to be Applied for Agencies"
+                  name="amountToBeAppliedForAgencies"
+                >
                   <Input allowClear prefix="&#8377;" suffix="/-" />
                 </Form.Item>
               </div>
@@ -187,18 +376,27 @@ export default function ProjectAddEdit() {
           <Row gutter={24}>
             <Col className="gutter-row" span={6}>
               <div>
-                <Form.Item label="Project Completion Date">
+                <Form.Item
+                  label="Project Completion Date"
+                  name="projectCompletionDate"
+                >
                   <DatePicker format={"DD/MM/YYYY"} />
                 </Form.Item>
               </div>
             </Col>
             <Col className="gutter-row" span={6}>
               <div>
-                <Form.Item label="Completion Status">
+                <Form.Item
+                  label="Completion Status"
+                  name="projectCompletionStatus"
+                >
                   <Select
-                    defaultValue="a1"
+                    fieldNames={{
+                      label: "completionStatusName",
+                      value: "completionStatusId",
+                    }}
                     //   onChange={handleChange}
-                    options={options}
+                    options={completionStatus}
                   />
                 </Form.Item>
               </div>
@@ -206,7 +404,7 @@ export default function ProjectAddEdit() {
           </Row>
           <Row gutter={24}>
             <Col className="gutter-row" span={8}>
-              <Form.Item label="Remarks">
+              <Form.Item label="Remarks" name="remarks">
                 <TextArea rows={2} />
               </Form.Item>
             </Col>
@@ -227,17 +425,28 @@ export default function ProjectAddEdit() {
             <Col span={24}>
               <Form.Item style={{ textAlign: "center" }}>
                 <Space>
-                  <Button type="primary" size="large" icon={<SaveOutlined />}>
+                  <Button
+                    type="primary"
+                    size="large"
+                    htmlType="submit"
+                    icon={<SaveOutlined />}
+                  >
                     Save
                   </Button>
-                  <Button type="default" size="large" icon={<ClearOutlined />}>
+                  <Button
+                    type="default"
+                    onClick={() => {
+                      form.resetFields();
+                    }}
+                    size="large"
+                    icon={<ClearOutlined />}
+                  >
                     Clear
                   </Button>
                 </Space>
               </Form.Item>
             </Col>
           </Row>
-          <div className="submitSection"></div>
         </Form>
       </div>
     </div>
