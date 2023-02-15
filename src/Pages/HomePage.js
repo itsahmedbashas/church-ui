@@ -20,7 +20,7 @@ export default function HomePage() {
           display: "flex",
           flexDirection: "row",
           flex: 1,
-          height: "92vh",
+          height: "90vh",
         }}
       >
         <Sidebar />

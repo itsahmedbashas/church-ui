@@ -183,6 +183,7 @@ export default function ProjectAddEdit() {
               </div>
             </Col>
           </Row>
+          <legend>Project Status</legend>
           <Row gutter={24}>
             <Col className="gutter-row" span={6}>
               <div>

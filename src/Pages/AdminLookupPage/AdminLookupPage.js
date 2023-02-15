@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Input, Modal, Table, Form } from "antd";
+import { Button, Input, Modal, Table, Form, Divider } from "antd";
 import "./AdminLookupPage.css";
 import {
   ExclamationCircleFilled,
@@ -232,6 +232,7 @@ export default function AdminLookupPage() {
         }}
         onCancel={() => onModalClose()}
       >
+        <Divider />
         <Form
           form={form}
           layout="vertical"
