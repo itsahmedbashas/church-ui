@@ -12,7 +12,7 @@ export default function HomeRoutes() {
         <Route index element={<Projects />} />
         <Route path="/proj" element={<Projects />} />
         <Route path="/admin/:id" element={<AdminLookupPage />} />
-        <Route path="/newProj" element={<ProjectAddEdit />} />
+        <Route path="/project/:id?" element={<ProjectAddEdit />} />
       </Route>
     </Routes>
   );

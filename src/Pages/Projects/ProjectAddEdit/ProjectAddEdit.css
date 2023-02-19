@@ -1,3 +1,9 @@
-.projectForm {
-  width: 60vw;
+
+.datePicker {
+  width: 95%;
+  padding: 8px;
+  border-color: #d9d9d9;
+  box-shadow: none;
+  border: 1px solid #d9d9d9;
+  display: flex;
 }

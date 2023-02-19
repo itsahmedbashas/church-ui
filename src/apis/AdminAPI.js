@@ -39,4 +39,34 @@ export const AdminAPI = {
     });
     return response.data;
   },
+
+  // save project
+  saveProject: async (project) => {
+    const response = await api.request({
+      url: `/admin/saveProject`,
+      method: "POST",
+      data: project,
+    });
+    return response.data;
+  },
+
+  // get all projects
+  getProjects: async (searchText) => {
+    const response = await api.request({
+      method: "GET",
+      url: `/admin/getProjects${
+        searchText != null ? `?searchText=${searchText}` : ""
+      }`,
+    });
+    return response.data;
+  },
+
+  // get project based on project id
+  getProject: async (projectId) => {
+    const response = await api.request({
+      method: "GET",
+      url: `/admin/getProject/${projectId}`,
+    });
+    return response.data;
+  },
 };

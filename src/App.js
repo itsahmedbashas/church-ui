@@ -4,16 +4,11 @@ import { Route, Routes } from "react-router-dom";
 import HomeRoutes from "./Routes/HomeRoutes";
 import api from "./apis/AxiosConfigs";
 import Loader from "./Components/Loader";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import "react-datepicker/dist/react-datepicker.css";
 
 const App = () => {
   const [loading, setLoading] = useState(false);
-  // useEffect(() => {
-  //   setLoading(true);
-  //   setTimeout(() => {
-  //     setLoading(false);
-  //   }, 2000);
-  // }, []);
   api.interceptors.request.use((request) => {
     setLoading(true);
     return request;

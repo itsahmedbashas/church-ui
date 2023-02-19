@@ -1,7 +1,24 @@
 .projectsSearchBar {
-    width: 20vw !important;
-  }
-    
-  .projectsAdd {
-    width: 65vw;
-  }
+  width: 20vw !important;
+}
+
+.projectsAdd {
+  width: 65vw;
+}
+
+th {
+  text-align: center !important;
+}
+
+.windowTable {
+  width: 75vw !important;
+}
+
+.windowAdd {
+  width: 75vw !important;
+  display: flex;
+}
+
+.searchButtons{
+  flex-direction: row-reverse !important;
+}
