@@ -79,4 +79,14 @@ export const AdminAPI = {
     });
     return response.data;
   },
+
+  // delete project based on project ids
+  deleteProjects: async (projectIds) => {
+    const response = await api.request({
+      method: "DELETE",
+      url: "/admin/deleteProjects",
+      data: projectIds,
+    });
+    return response.data;
+  },
 };

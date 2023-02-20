@@ -2,15 +2,17 @@ import {
   BankOutlined,
   DeleteOutlined,
   EditOutlined,
+  ExclamationCircleFilled,
   FundProjectionScreenOutlined,
   PlusCircleOutlined,
 } from "@ant-design/icons";
-import { Input, Button, Table, Space, message } from "antd";
+import { Input, Button, Table, Space, message, Drawer, Modal } from "antd";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AdminAPI } from "../../apis/AdminAPI";
 import "./Projects.css";
 const { Search } = Input;
+const { confirm } = Modal;
 
 export default function Projects() {
   const columns = [
@@ -69,6 +71,15 @@ export default function Projects() {
   //setting selected projects
   const [selectedProjects, setSelectedProjects] = useState([]);
 
+  // --- drawer related
+  const [open, setOpen] = useState(false);
+  const showDrawer = () => {
+    setOpen(true);
+  };
+  const onClose = () => {
+    setOpen(false);
+  };
+
   const projectsSelection = {
     onChange: (selectedProjectIds, selectedProjects) => {
       setSelectedProjects(selectedProjects);
@@ -116,6 +127,8 @@ export default function Projects() {
       messageAPI.error("Please Select Single Project to Propose");
       return;
     }
+
+    showDrawer();
   };
   // function call to add projects
   const onAddProject = () => {
@@ -141,7 +154,39 @@ export default function Projects() {
       messageAPI.error("Please Select Project(s) to Delete");
       return;
     }
+    showDeleteConfirm(selectedProjects);
   };
+
+  // delete confirm dialog
+  const showDeleteConfirm = (projectsToDelete) => {
+    confirm({
+      title: `Selected Project(s) : ${projectsToDelete.length} will be deleted permanently?`,
+      icon: <ExclamationCircleFilled />,
+      okText: "Continue",
+      okType: "danger",
+      cancelText: "Cancel",
+      onOk() {
+        const projectIds = projectsToDelete.map((m) => m.projectId);
+        projectIds &&
+          projectIds.length > 0 &&
+          deleteSelectedProjects(projectIds);
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  };
+
+  // function to delete projects
+  const deleteSelectedProjects = (projectIds) => {
+    AdminAPI.deleteProjects(projectIds)
+      .then((res) => {
+        messageAPI.success("Project Deleted Successfully");
+        getProjects();
+      })
+      .catch((err) => {});
+  };
+
   // function call to search projec
   const onSearchProject = (searchText) => {
     getProjects(searchText);
@@ -216,6 +261,13 @@ export default function Projects() {
           }}
         />
       </div>
+      <Drawer
+        width={500}
+        placement="right"
+        closable={false}
+        onClose={onClose}
+        open={open}
+      ></Drawer>
     </div>
   );
 }
