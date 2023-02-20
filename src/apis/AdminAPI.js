@@ -69,4 +69,14 @@ export const AdminAPI = {
     });
     return response.data;
   },
+
+  // updating project
+  updateProject: async (project) => {
+    const response = await api.request({
+      method: "PUT",
+      url: `/admin/updateProject`,
+      data: project,
+    });
+    return response.data;
+  },
 };

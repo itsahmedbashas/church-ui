@@ -201,7 +201,24 @@ export default function ProjectAddEdit() {
         formValues.projectCompletionDate
       ).toLocaleDateString();
 
-    AdminAPI.saveProject(projectDetails)
+    // based on the selected project details, we are
+    if (selectedProject && selectedProject.projectId > 0) {
+      projectDetails.projectId = selectedProject.projectId;
+      projectDetails.projectNumber = selectedProject.projectNumber;
+      updateProject(projectDetails);
+    } else {
+      saveProject(projectDetails);
+    }
+  };
+
+  /** when form failed to get mandatory values */
+  const onSubmitFailed = (errorInfo) => {
+    messageAPI.error("Fill madatory fields");
+  };
+
+  // function to save project details
+  const saveProject = (project) => {
+    AdminAPI.saveProject(project)
       .then((res) => {
         messageAPI.success("Project Saved Successfully");
         navigate("/mainHome/proj");
@@ -209,9 +226,14 @@ export default function ProjectAddEdit() {
       .catch((err) => {});
   };
 
-  /** when form failed to get mandatory values */
-  const onSubmitFailed = (errorInfo) => {
-    messageAPI.error("Fill madatory fields");
+  // function to update project details
+  const updateProject = (project) => {
+    AdminAPI.updateProject(project)
+      .then((res) => {
+        messageAPI.success("Project Updaed Successfully");
+        navigate("/mainHome/proj");
+      })
+      .catch((err) => {});
   };
 
   return (
